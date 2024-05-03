@@ -1,17 +1,26 @@
-runtime: php81
-service: dev
-handlers:
-  - url: /(.*\.(gif|png|jpg|css|js|svg|woff2|ttf))$
-    static_files: public/\1
-    upload: public/.*\.(gif|png|jpg|css|js|svg|woff2|ttf)$
-  - url: /.*
-    secure: always
-    redirect_http_response_code: 301
-    script: auto
+runtime: php
+env: flex
+
+runtime_config: document_root: public
+
+# Ensure we skip ".env", which is only for local development
+skip_files: 
+    - .env
+
+automatic_scaling:
+    min_num_instances: 1
+    max_num_instances: 1
+
+resources:
+    cpu: 2
+    memory_gb: 4
+    disk_size_gb: 100
+
 env_variables:
-  APP_NAME: App
-  APP_ENV: development
-  APP_STORAGE: /tmp
-  VIEW_COMPILED_PATH: /tmp
-  SESSION_DRIVER: cookie
-  APP_DEBUG: true
+    # Put production environment variables here.
+    APP_DEBUG: true
+    APP_ENV: production
+    APP_KEY: base64:h6Z93RlOKiijHOl9Zqd5zwS+G0oO7vOuZhSqkUZGC/c=
+    APP_NAME: "GCP App - CODE"
+
+    LOG_LEVEL: debug

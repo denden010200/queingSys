@@ -1,15 +1,11 @@
 steps:
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
     args:
-      - "-c"
+      - '-c'
       - |
-        echo $'\n  APP_KEY: '$_APP_KEY >> app.yaml
-        gcloud config set app/cloud_build_timeout 3600 && gcloud app deploy app.yaml -q --promote -v=$BUILD_ID --project=$PROJECT_ID --no-cache
-    entrypoint: bash
+        gcloud config set app/cloud_build_timeout 3600 \
+        && gcloud app deploy -q --promote -v=$BUILD_ID \
+        --project=$PROJECT_ID
 
-     secretEnv: ["APP_KEY"]
-availableSecrets:
-  secretManager:
-    - versionName: projects/294838881802/secrets/DEV_APP_KEY/versions/1
-      env: "APP_KEY"
- 
+timeout: '3600s'
